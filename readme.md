@@ -2,25 +2,23 @@
 
 *   功能
 
-    五个功能: 发起签约(基于api模板),获取签约链接,检查签约状态,撤销签约,下载文件
-    
-
-
+    目前只实现五个功能
 
         public interface IJunziqianService
-        {  
-            
+        {
+            //发起签约
             Task<string> Sign(IContract junziqianContract, ITemplateParamAdapter templateParamAdapter);
+            //获取签署链接
             Task<string> GetSignLink(GetLinkRequest getLinkRequest);
+            //检查签署状态
             Task<SignStatus> CheckSignStatus(string applyNo);
+            //撤销签署
             Task<bool> CancelSign(string applyNo);
+            //获取下载链接
             Task<string> GetDownloadLink(string applyNo);
-            Task<string> Sign(IContract junziqianContract, ITemplateParamAdapter templateParamAdapter);
         }
-
-*   签约发起
-
-    *   实现IContract
+    
+    *   IContract: 合同签署所需数据. 样例:
 
              public class Trade :IContract {
                  
@@ -34,7 +32,7 @@
                  public string ContractName => "交易合同 标的物:" + AccountNo;
              }
 
-    *   实现模板变量绑定
+    *   ITemplateParamAdapter:模板变量适配器.样例:
 
                public class TradeTemplateAdapter : ITemplateParamAdapter
                {
@@ -45,9 +43,7 @@
                    }
                    public IList<TemplateParam> AdaptParams()
                    {
-                       //todo: 做成配置
                        return new List<TemplateParam> {
-
                            new TemplateParam{  Name="双方交易_姓名" , Value=trade.Name },
                            new TemplateParam{  Name="双方交易_身份证" , Value=trade.IdCardNo },
                            new TemplateParam{  Name="双方交易_电话" , Value=trade.Phone},
@@ -65,49 +61,35 @@
                    }
                }
 
-    *   传入上述两个参数,返回applyNo
-
-        ```
-          IJunziQianService junziQianService;//依赖注入
-          
-          var applyNo = await junziQianService.Sign(model.ForAutoFlow, templateParamAdapter);
-
-        ```
-
-*   其他四个接口传参简单,不赘述.
+2.   其他四个接口传参简单,不赘述.
 
 # 准备
 
-*   引入nuget包
+1.   引入nuget包
 
         dotnet add package JunqiQianSdk
 
-*   配置 appsettings.\[env].json
+2.  配置 appsettings.\[env].json
 
     ```JSON
     {
       "Junziqian": {
-                            //服务配置
+         //服务配置
         "ServiceUrl": "https://api.sandbox.junziqian.com", 
         "AppKey": "*****************",
         "AppSecret": ""*****************",",
-                            //公司信息
+         //公司信息
         "CorpSignator": {
           "Name": "****",
           "Email": "*****",
           "IdCardNo": "*********"
 
         },
-        
         "AuthLevel": [11], //签署验证方式
-       
         "Templates": [     //Api模板设置
           {
-         
             "BusinessType": "Trade",     //模板业务类型
-          
             "TemplateNo": "*********************",    //模板编号
-           
             "EnterprisePosition": {    //企业签章位置
               "PageNo": 5,
               "OffsetX": 0.3676,
@@ -115,7 +97,7 @@
               "SignId": 316399
 
             },
-    //乙方签章位置
+                                     //乙方签章位置
             "OtherPosition": {
               "PageNo": 5,
               "OffsetX": 0.3207,
@@ -123,7 +105,7 @@
 
             }
           },
-          // 另一个业务模板
+                         // 另一个业务模板
           {
             "BusinessType": "Dealer",
             "TemplateNo": "*************",
@@ -147,11 +129,13 @@
       
     ```
 
-*   使用Autofac注入服务:
+3.   使用Autofac注入服务:
 
     ```C#
     container.AddJunziqianSdk(  IConfiguration configurtion );
     ```
+
+4. 将 IJunziqianService 注入业务服务
 
 
 
