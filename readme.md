@@ -114,6 +114,7 @@
               "SignId": 316399
 
             },
+    //乙方签章位置
             "OtherPosition": {
               "PageNo": 5,
               "OffsetX": 0.3207,
