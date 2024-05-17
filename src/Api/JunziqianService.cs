@@ -2,6 +2,7 @@
 using JunziQianSdk.Api.Sign;
 using JunziQianSdk.Infra.Request;
 using JunziQianSdk.Infra.Responses;
+using JunziQianSdk.Infra.Templates;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,9 +25,11 @@ namespace JunziQianSdk.Api
             this.templates = templates;
             this.signRequestFiller = signRequestFiller;
         }
-        public async Task<string> Sign(IContract junziqianContract, AbsRequestCreator absSignRequestCreator)
+        public async Task<string> Sign(IContract junziqianContract, ITemplateParamAdapter templateParamAdapter)
         {
             TemplateConfig template;
+            
+           var  signRequestCreator=new ContractSignRequestCreator(junziqianContract, templateParamAdapter,signRequestFiller,templates);
             var businessNameForTemplate = junziqianContract.BusinessNameForTemplate;
             try
             {
@@ -40,7 +43,7 @@ namespace JunziQianSdk.Api
             }
 
             var response = await contractService.MakeRequest<BaseRequest, string>
-                 (absSignRequestCreator.CreateRequest());
+                 (signRequestCreator.CreateRequest());
 
             return response;
         }
