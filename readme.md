@@ -69,7 +69,7 @@
 
 2.  配置 appsettings.\[env].json
 
-    ```JSON
+    ```yml
     {
       "Junziqian": {
          //服务配置
@@ -95,7 +95,7 @@
               "SignId": 316399
 
             },
-                                     //乙方签章位置
+             //乙方签章位置
             "OtherPosition": {
               "PageNo": 5,
               "OffsetX": 0.3207,
@@ -103,7 +103,7 @@
 
             }
           },
-                         // 另一个业务模板
+           // 另一个业务模板
           {
             "BusinessType": "Dealer",
             "TemplateNo": "*************",
@@ -112,7 +112,6 @@
               "OffsetX": 0.3377,
               "OffsetY": 0.4192
             },
-            // 0.007 约等于 4 毫米
             "EnterprisePosition": {
               "PageNo": 4,
               "OffsetX": 0.3597,
