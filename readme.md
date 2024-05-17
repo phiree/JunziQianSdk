@@ -1,8 +1,8 @@
 # 功能
 
 *    目前只实现五个功能:
-
-        public interface IJunziqianService
+  ```C#
+      public interface IJunziqianService
         {
             //发起签约
             Task<string> Sign(IContract junziqianContract, ITemplateParamAdapter templateParamAdapter);
@@ -15,7 +15,7 @@
             //获取下载链接
             Task<string> GetDownloadLink(string applyNo);
         }
-    
+```
     *   IContract: 合同签署所需数据. 样例:
 
              public class Trade :IContract {
