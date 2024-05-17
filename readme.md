@@ -1,8 +1,6 @@
-# 功能及使用
+# 功能
 
-*   功能
-
-    目前只实现五个功能
+*    目前只实现五个功能:
 
         public interface IJunziqianService
         {
